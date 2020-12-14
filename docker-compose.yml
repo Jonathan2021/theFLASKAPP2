@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+    flaskapp:
+        build: .
+        image: titanic-flask:latest
+        ports:
+            - "5000:5000"
+        links:
+            - "postgres:db"
+        depends_on:
+            - postgres
+        environment:
+            SECRET_KEY: mysecretkey
+            USE_POSTGRES: 'true'
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-docker}
+            POSTGRES_USER: ${POSTGRES_USER:-docker}
+            POSTGRES_DB: ${POSTGRES_USER:-db}
+
+    postgres:
+        image: postgres
+        environment:
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-docker}
+            POSTGRES_USER: ${POSTGRES_USER:-docker}
+            POSTGRES_DB: ${POSTGRES_USER:-db}
+        restart: always
+
+
